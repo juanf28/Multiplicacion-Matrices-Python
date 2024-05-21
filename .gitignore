@@ -1,0 +1,14 @@
+src/1matriz/
+src/2matriz/ 
+/venv/
+/env/
+/virtualenv/
+*.pyc
+__pycache__/
+*.pyo
+/Lib/
+/lib64/
+/dist/
+/vbuild/
+.env/
+.git/
