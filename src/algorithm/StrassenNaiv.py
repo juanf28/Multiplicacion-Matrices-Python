@@ -1,92 +1,158 @@
-class StrassenNaiv:
-    @staticmethod
-    def multiply(A, B):
-        n = len(A)
+import numpy as np
+import math
 
-        # Si el tamaño de la matriz es 1x1, realiza la multiplicación directamente
-        if n == 1:
-            C = [[A[0][0] * B[0][0]]]
-            return C
+from tools.Imprimir import Imprimir
 
-        # Si el tamaño de la matriz es pequeño, usa la multiplicación naive
-        if n <= 2:
-            return StrassenNaiv.multiply_naive(A, B)
-
-        # Inicialización de las submatrices
-        new_size = n // 2
-        A11 = [row[:new_size] for row in A[:new_size]]
-        A12 = [row[new_size:] for row in A[:new_size]]
-        A21 = [row[:new_size] for row in A[new_size:]]
-        A22 = [row[new_size:] for row in A[new_size:]]
-        B11 = [row[:new_size] for row in B[:new_size]]
-        B12 = [row[new_size:] for row in B[:new_size]]
-        B21 = [row[:new_size] for row in B[new_size:]]
-        B22 = [row[new_size:] for row in B[new_size:]]
-
-        # Calculo de las M's
-        M1 = StrassenNaiv.multiply(StrassenNaiv.add(A11, A22), StrassenNaiv.add(B11, B22))
-        M2 = StrassenNaiv.multiply(StrassenNaiv.add(A21, A22), B11)
-        M3 = StrassenNaiv.multiply(A11, StrassenNaiv.subtract(B12, B22))
-        M4 = StrassenNaiv.multiply(A22, StrassenNaiv.subtract(B21, B11))
-        M5 = StrassenNaiv.multiply(StrassenNaiv.add(A11, A12), B22)
-        M6 = StrassenNaiv.multiply(StrassenNaiv.subtract(A21, A11), StrassenNaiv.add(B11, B12))
-        M7 = StrassenNaiv.multiply(StrassenNaiv.subtract(A12, A22), StrassenNaiv.add(B21, B22))
-
-        # Calculo de las submatrices de C
-        C11 = StrassenNaiv.add(StrassenNaiv.subtract(StrassenNaiv.add(M1, M4), M5), M7)
-        C12 = StrassenNaiv.add(M3, M5)
-        C21 = StrassenNaiv.add(M2, M4)
-        C22 = StrassenNaiv.add(StrassenNaiv.subtract(StrassenNaiv.add(M1, M3), M2), M6)
-
-        # Combinación de las submatrices en la matriz resultante
-        C = [[0] * n for _ in range(n)]
-        StrassenNaiv.join_matrix(C11, C, 0, 0)
-        StrassenNaiv.join_matrix(C12, C, 0, new_size)
-        StrassenNaiv.join_matrix(C21, C, new_size, 0)
-        StrassenNaiv.join_matrix(C22, C, new_size, new_size)
-        return C
+class StrassenNaiv(Imprimir):
 
     @staticmethod
-    def multiply_naive(A, B):
-        n = len(A)
-        C = [[0] * n for _ in range(n)]
-        for i in range(n):
-            for j in range(n):
-                for k in range(n):
-                    C[i][j] += A[i][k] * B[k][j]
-        return C
+    def max_val(N, P):
+        return max(N, P)
 
     @staticmethod
-    def add(A, B):
-        n = len(A)
-        C = [[0] * n for _ in range(n)]
-        for i in range(n):
-            for j in range(n):
-                C[i][j] = A[i][j] + B[i][j]
-        return C
+    def plus(matrizA, matrizB, matrizRes, N, M):
+        for i in range(N):
+            for j in range(M):
+                matrizRes[i][j] = matrizA[i][j] + matrizB[i][j]
 
     @staticmethod
-    def subtract(A, B):
-        n = len(A)
-        C = [[0] * n for _ in range(n)]
-        for i in range(n):
-            for j in range(n):
-                C[i][j] = A[i][j] - B[i][j]
-        return C
+    def minus(matrizA, matrizB, matrizRes, N, M):
+        for i in range(N):
+            for j in range(M):
+                matrizRes[i][j] = matrizA[i][j] - matrizB[i][j]
 
     @staticmethod
-    def split_matrix(P, C, iB, jB):
-        for i1, i2 in enumerate(range(iB, iB + len(C))):
-            for j1, j2 in enumerate(range(jB, jB + len(C))):
-                C[i1][j1] = P[i2][j2]
+    def algoritmoNaivStandard(matrizA, matrizB, matrizRes, N, P, M):
+        for i in range(N):
+            for j in range(M):
+                aux = 0.0
+                for k in range(P):
+                    aux += matrizA[i][k] * matrizB[k][j]
+                matrizRes[i][j] = aux
 
     @staticmethod
-    def join_matrix(C, P, iB, jB):
-        for i1, i2 in enumerate(range(iB, iB + len(C))):
-            for j1, j2 in enumerate(range(jB, jB + len(C))):
-                P[i2][j2] = C[i1][j1]
+    def strassenNaivStep(matrizA, matrizB, matrizRes, N, m):
+        if (N % 2 == 0) and (N > m):
+            newSize = N // 2
+
+            varA11 = np.zeros((newSize, newSize))
+            varA12 = np.zeros((newSize, newSize))
+            varA21 = np.zeros((newSize, newSize))
+            varA22 = np.zeros((newSize, newSize))
+            varB11 = np.zeros((newSize, newSize))
+            varB12 = np.zeros((newSize, newSize))
+            varB21 = np.zeros((newSize, newSize))
+            varB22 = np.zeros((newSize, newSize))
+
+            resultadoPart11 = np.zeros((newSize, newSize))
+            resultadoPart12 = np.zeros((newSize, newSize))
+            resultadoPart21 = np.zeros((newSize, newSize))
+            resultadoPart22 = np.zeros((newSize, newSize))
+
+            helper1 = np.zeros((newSize, newSize))
+            helper2 = np.zeros((newSize, newSize))
+
+            aux1 = np.zeros((newSize, newSize))
+            aux2 = np.zeros((newSize, newSize))
+            aux3 = np.zeros((newSize, newSize))
+            aux4 = np.zeros((newSize, newSize))
+            aux5 = np.zeros((newSize, newSize))
+            aux6 = np.zeros((newSize, newSize))
+            aux7 = np.zeros((newSize, newSize))
+
+            # Fill the new matrices
+            for i in range(newSize):
+                for j in range(newSize):
+                    varA11[i][j] = matrizA[i][j]
+                    varA12[i][j] = matrizA[i][newSize + j]
+                    varA21[i][j] = matrizA[newSize + i][j]
+                    varA22[i][j] = matrizA[newSize + i][newSize + j]
+                    varB11[i][j] = matrizB[i][j]
+                    varB12[i][j] = matrizB[i][newSize + j]
+                    varB21[i][j] = matrizB[newSize + i][j]
+                    varB22[i][j] = matrizB[newSize + i][newSize + j]
+
+            # Calculate the steps
+            StrassenNaiv.plus(varA11, varA22, helper1, newSize, newSize)
+            StrassenNaiv.plus(varB11, varB22, helper2, newSize, newSize)
+            StrassenNaiv.strassenNaivStep(helper1, helper2, aux1, newSize, m)
+
+            StrassenNaiv.plus(varA21, varA22, helper1, newSize, newSize)
+            StrassenNaiv.strassenNaivStep(helper1, varB11, aux2, newSize, m)
+
+            StrassenNaiv.minus(varB12, varB22, helper1, newSize, newSize)
+            StrassenNaiv.strassenNaivStep(varA11, helper1, aux3, newSize, m)
+
+            StrassenNaiv.minus(varB21, varB11, helper1, newSize, newSize)
+            StrassenNaiv.strassenNaivStep(varA22, helper1, aux4, newSize, m)
+
+            StrassenNaiv.plus(varA11, varA12, helper1, newSize, newSize)
+            StrassenNaiv.strassenNaivStep(helper1, varB22, aux5, newSize, m)
+
+            StrassenNaiv.minus(varA21, varA11, helper1, newSize, newSize)
+            StrassenNaiv.plus(varB11, varB12, helper2, newSize, newSize)
+            StrassenNaiv.strassenNaivStep(helper1, helper2, aux6, newSize, m)
+
+            StrassenNaiv.minus(varA12, varA22, helper1, newSize, newSize)
+            StrassenNaiv.plus(varB21, varB22, helper2, newSize, newSize)
+            StrassenNaiv.strassenNaivStep(helper1, helper2, aux7, newSize, m)
+
+            # Calculate the result parts
+            StrassenNaiv.plus(aux1, aux4, resultadoPart11, newSize, newSize)
+            StrassenNaiv.minus(resultadoPart11, aux5, resultadoPart11, newSize, newSize)
+            StrassenNaiv.plus(resultadoPart11, aux7, resultadoPart11, newSize, newSize)
+
+            StrassenNaiv.plus(aux3, aux5, resultadoPart12, newSize, newSize)
+            StrassenNaiv.plus(aux2, aux4, resultadoPart21, newSize, newSize)
+
+            StrassenNaiv.plus(aux1, aux3, resultadoPart22, newSize, newSize)
+            StrassenNaiv.minus(resultadoPart22, aux2, resultadoPart22, newSize, newSize)
+            StrassenNaiv.plus(resultadoPart22, aux6, resultadoPart22, newSize, newSize)
+
+            # Store the results in the resulting matrix
+            for i in range(newSize):
+                for j in range(newSize):
+                    matrizRes[i][j] = resultadoPart11[i][j]
+                    matrizRes[i][newSize + j] = resultadoPart12[i][j]
+                    matrizRes[newSize + i][j] = resultadoPart21[i][j]
+                    matrizRes[newSize + i][newSize + j] = resultadoPart22[i][j]
+        else:
+            StrassenNaiv.algoritmoNaivStandard(matrizA, matrizB, matrizRes, N, N, N)
 
     @staticmethod
-    def print_matrix(matrix):
-        for row in matrix:
-            print(' '.join(map(str, row)))
+    def algStrassenNaiv(matrizA, matrizB, matrizRes, N, P, M):
+        maxSize = StrassenNaiv.max_val(N, P)
+        if maxSize < 16:
+            maxSize = 16
+
+        k = int(math.floor(math.log(maxSize) / math.log(2)) - 4)
+        m = int(math.floor(maxSize * math.pow(2, -k)) + 1)
+        newSize = m * int(math.pow(2, k))
+
+        newA = np.zeros((newSize, newSize))
+        newB = np.zeros((newSize, newSize))
+        auxResult = np.zeros((newSize, newSize))
+
+        for i in range(N):
+            for j in range(P):
+                newA[i][j] = matrizA[i][j]
+
+        for i in range(N):
+            for j in range(M):
+                newB[i][j] = matrizB[i][j]
+
+        StrassenNaiv.strassenNaivStep(newA, newB, auxResult, newSize, m)
+
+        for i in range(N):
+            for j in range(M):
+                matrizRes[i][j] = auxResult[i][j]
+
+    @staticmethod
+    def multiply(matrizA, matrizB):
+        N = len(matrizA)
+        P = len(matrizB)
+        M = len(matrizB[0])
+        matrizRes = np.zeros((N, M))
+        StrassenNaiv.algStrassenNaiv(matrizA, matrizB, matrizRes, N, P, M)
+        return matrizRes
+

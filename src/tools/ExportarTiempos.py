@@ -1,9 +1,9 @@
 import os
 
 class ExportarTiempos:
-    algoritmo = ["NaivStandard", "NaivOnArray", "NaivKahan", "NaivLoopUnrollingTwo", "NaivLoopUnrollingThree", "NaivLoopUnrollingFour", "WinogradOriginal", "WinogradScaled", "StrassenNaiv", "StrassenWinograd", "III-SequentialBlock", "III-ParallelBlock"]
+    algoritmo = ["NaivOnArray", "NaivLoopUnrollingTwo", "NaivLoopUnrollingFour", "StrassenNaiv", "WinogradOriginal", "WinogradScaled", "StrassenWinograd", "III_3_Sequential_Block", "IV_3_Sequential_Block", "V_3_SequentialBlock", "III_4_Parallel_Block", "IV_4_Parallel_Block", "V_4_Parallel_Block", "III_5_Enhanced_Parallel_Block", "IV_5_Enhanced_Parallel_Block"]
 
-    matrices = ["matriz256x256", "matriz512x512", "matriz1024x1024", "matriz2048x2048", "matriz4096x4096", "matriz6144x6144", "matriz8192x8192", "matriz12288x12288"]
+    matrices = ["matriz16x16", "matriz32x32", "matriz64x64", "matriz128x128", "matriz256x256", "matriz512x512", "matriz1024x1024", "matriz2048x2048"]
 
     @staticmethod
     def getAlgoritmo():

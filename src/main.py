@@ -38,26 +38,26 @@ class Main:
 
     @staticmethod
     def main(args):
-      ##  Main.crearMatrices()
-        
+        Main.crearMatrices()
         Main.vaciar_tiempos()
-        
+        Main.calcular_tiempos()
+        Main.mostrar_grafica()
+    @staticmethod
+    def calcular_tiempos():
         for algoritmo in range(1, 16):  # Solo de 4 a 15 según tu Java
-            for caso in range(1, 9):  # Solo el caso 8 según tu Java
-                Main.matrices(caso)
-                Main.algorithm(algoritmo)
-                print(f"Termino algoritmo: {algoritmo} caso {caso}\n")
-                try:
-                    ExportarTiempos.ExportarTiempos.exportar_tiempos_matriz(TiempoEjecucion.TiempoEjecucion.matrices_tiempo_algoritmos, caso)
-                    ExportarTiempos.ExportarTiempos.exportar_tiempos(TiempoEjecucion.TiempoEjecucion.matrices_tiempo_algoritmos, algoritmo)
-                except IOError as e:
-                    print("Error de entrada/salida:", e)
-                except RuntimeError as e:
-                    print("Error en tiempo de ejecución:", e)
-                TiempoEjecucion.TiempoEjecucion.matrices_tiempo_algoritmos.clear()
-        
-    ##    Main.mostrar_grafica()
-
+                    for caso in range(1, 9):  # Solo el caso 8 según tu Java
+                        print(f"Ejecutando algoritmo {algoritmo} caso {caso}...")
+                        Main.matrices(caso)
+                        Main.algorithm(algoritmo)
+                        print(f"Termino algoritmo {algoritmo} caso {caso}\n")
+                        try:
+                            ExportarTiempos.ExportarTiempos.exportar_tiempos_matriz(TiempoEjecucion.TiempoEjecucion.matrices_tiempo_algoritmos, caso)
+                            ExportarTiempos.ExportarTiempos.exportar_tiempos(TiempoEjecucion.TiempoEjecucion.matrices_tiempo_algoritmos, algoritmo)
+                        except IOError as e:
+                            print("Error de entrada/salida:", e)
+                        except RuntimeError as e:
+                            print("Error en tiempo de ejecución:", e)
+                        TiempoEjecucion.TiempoEjecucion.matrices_tiempo_algoritmos.clear()
     @staticmethod
     def vaciar_tiempos():
         try:
@@ -77,7 +77,7 @@ class Main:
        ruta = "src/"
        os.makedirs(ruta + "1matriz", exist_ok=True)
        os.makedirs(ruta + "2matriz", exist_ok=True)
-       tamaños = [256, 512, 1024, 2048, 3072, 4096, 6144, 8192]  # Tamaños especificados
+       tamaños = [16, 32, 64, 128, 256, 512, 1024, 2048]  # Tamaños especificados
 
        for tamaño in tamaños:
             matriz = Main.generarMatriz(tamaño, tamaño)
@@ -118,31 +118,32 @@ class Main:
             elif option == 3:
                 Main.execute_algorithm(lambda: NaivLoopUnrollingFour.naivLoopUnrollingFour(Main.Matriz1, Main.Matriz2))
             elif option == 4:
-                Main.execute_algorithm(lambda: StrassenNaiv.multiply(matrizDouble1, matrizDouble2))
-            elif option == 5:
                 Main.execute_algorithm(lambda: WinogradOriginal.multiply(matrizDouble1, matrizDouble2))
-            elif option == 6:
+            elif option == 5:
                 Main.execute_algorithm(lambda: WinogradScaled.multiply(matrizDouble1, matrizDouble2))
+            elif option == 6:
+                Main.execute_algorithm(lambda: StrassenNaiv(matrizDouble1, matrizDouble2))
             elif option == 7:
                 Main.execute_algorithm(lambda: StrassenWinograd.multiply(matrizDouble1, matrizDouble2))
             elif option == 8:
                 Main.execute_algorithm(lambda: III_3_Sequential_Block.multiply(matrizDouble1, matrizDouble2))
             elif option == 9:
-                Main.execute_algorithm(lambda: IV_3_Sequential_Block.multiply(matrizDouble1, matrizDouble2))
-            elif option == 10:
-                Main.execute_algorithm(lambda: V_3_Sequential_Block.multiply(matrizDouble1, matrizDouble2))
-            elif option == 11:
                 Main.execute_algorithm(lambda: III_4_Parallel_Block.multiply(matrizDouble1, matrizDouble2))
+            elif option == 10:
+                Main.execute_algorithm(lambda: III_5_Enhanced_Parallel_Block.multiply(matrizDouble1, matrizDouble2))
+            elif option == 11:
+                Main.execute_algorithm(lambda: IV_3_Sequential_Block.multiply(matrizDouble1, matrizDouble2))
             elif option == 12:
                 Main.execute_algorithm(lambda: IV_4_Parallel_Block.multiply(matrizDouble1, matrizDouble2))
             elif option == 13:
-                Main.execute_algorithm(lambda: V_4_Parallel_Block.multiply(matrizDouble1, matrizDouble2))
-            elif option == 14:
-                Main.execute_algorithm(lambda: III_5_Enhanced_Parallel_Block.multiply(matrizDouble1, matrizDouble2))
-            elif option == 15:
                 Main.execute_algorithm(lambda: IV_5_Enhanced_Parallel_Block.multiply(matrizDouble1, matrizDouble2))
+            elif option == 14:
+                Main.execute_algorithm(lambda: V_3_Sequential_Block.multiply(matrizDouble1, matrizDouble2))
+            elif option == 15:
+                Main.execute_algorithm(lambda: V_4_Parallel_Block.multiply(matrizDouble1, matrizDouble2))
             else:
                 print("Opción incorrecta")
+
         finally:
             Main.Matriz1 = None
             Main.Matriz2 = None
@@ -160,32 +161,27 @@ class Main:
 
     @staticmethod
     def matrices(caso):
+        tam=0
         if caso == 1:
-            Main.Matriz1 = LeerArchivoTxt.leer_archivo("src/1matriz/1matriz_256x256.txt", 256)
-            Main.Matriz2 = LeerArchivoTxt.leer_archivo("src/2matriz/2matriz_256x256.txt", 256)
+            tam=16
         elif caso == 2:
-            Main.Matriz1 = LeerArchivoTxt.leer_archivo("src/1matriz/1matriz_512x512.txt", 512)
-            Main.Matriz2 = LeerArchivoTxt.leer_archivo("src/2matriz/2matriz_512x512.txt", 512)
+            tam=32
         elif caso == 3:
-            Main.Matriz1 = LeerArchivoTxt.leer_archivo("src/1matriz/1matriz_1024x1024.txt", 1024)
-            Main.Matriz2 = LeerArchivoTxt.leer_archivo("src/2matriz/2matriz_1024x1024.txt", 1024)
+            tam=64
         elif caso == 4:
-            Main.Matriz1 = LeerArchivoTxt.leer_archivo("src/1matriz/1matriz_2048x2048.txt", 2048)
-            Main.Matriz2 = LeerArchivoTxt.leer_archivo("src/2matriz/2matriz_2048x2048.txt", 2048)
+            tam=128
         elif caso == 5:
-            Main.Matriz1 = LeerArchivoTxt.leer_archivo("src/1matriz/1matriz_3072x3072.txt", 3072)
-            Main.Matriz2 = LeerArchivoTxt.leer_archivo("src/2matriz/2matriz_3072x3072.txt", 3072)
+            tam=256
         elif caso == 6:
-            Main.Matriz1 = LeerArchivoTxt.leer_archivo("src/1matriz/1matriz_4096x4096.txt", 4096)
-            Main.Matriz2 = LeerArchivoTxt.leer_archivo("src/2matriz/2matriz_4096x4096.txt", 4096)
+            tam=512
         elif caso == 7:
-            Main.Matriz1 = LeerArchivoTxt.leer_archivo("src/1matriz/1matriz_6144x6144.txt", 6144)
-            Main.Matriz2 = LeerArchivoTxt.leer_archivo("src/2matriz/2matriz_6144x6144.txt", 6144)
+            tam=1024
         elif caso == 8:
-            Main.Matriz1 = LeerArchivoTxt.leer_archivo("src/1matriz/1matriz_8192x8192.txt", 8192)
-            Main.Matriz2 = LeerArchivoTxt.leer_archivo("src/2matriz/2matriz_8192x8192.txt", 8192)
+            tam=2048
         else:
             print("Caso incorrecto")
+        Main.Matriz1 = LeerArchivoTxt.leer_archivo(f"src/1matriz/1matriz_{tam}x{tam}.txt", tam)
+        Main.Matriz2 = LeerArchivoTxt.leer_archivo(f"src/2matriz/2matriz_{tam}x{tam}.txt", tam)
             
     @staticmethod
     def mostrar_grafica():

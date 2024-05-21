@@ -58,15 +58,14 @@ class GraphFrame(Toplevel):
         self.canvas.draw()
 
     def get_available_matrix_sizes(self):
-        return ["256x256", "512x512", "1024x1024", "2048x2048", "4096x4096", "6144x6144", "8192x8192", "10240x10240"]
+        return ["16x16", "32x32", "64x64", "128x128", "256x256", "512x512", "1024x1024", "2048x2048"]
 
     def get_available_algorithms(self):
         return [
-            "Naive On Array", "Naive Loop Unrolling Two", "Naive Loop Unrolling Four",
-            "Strassen Naive", "Winograd Original", "Winograd Scaled",
-            "Strassen Winograd", "III 3 Sequential Block", "IV 3 Sequential Block",
-            "V 3 Sequential Block", "III 4 Parallel Block", "IV 4 Parallel Block",
-            "V 4 Parallel Block", "III 5 Enhanced Parallel Block", "IV 5 Enhanced Parallel Block"
+            "NaivOnArray", "NaivLoopUnrollingTwo", "NaivLoopUnrollingFour", "StrassenNaiv", "WinogradOriginal", 
+            "WinogradScaled", "StrassenWinograd", "III_3_Sequential_Block", "IV_3_Sequential_Block", "V_3_SequentialBlock", 
+            "III_4_Parallel_Block", "IV_4_Parallel_Block", "V_4_Parallel_Block", "III_5_Enhanced_Parallel_Block", 
+            "IV_5_Enhanced_Parallel_Block"
         ]
 
     def load_execution_times(self, tamano):
