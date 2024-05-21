@@ -2,7 +2,7 @@ import os
 
 def leer_tiempos_matriz(nombre_archivo):
     tiempos = []
-    ruta_archivo = os.path.join("TimeResultMatriz", nombre_archivo)
+    ruta_archivo = os.path.join("src", "TimeResultMatriz", nombre_archivo)
     try:
         with open(ruta_archivo, 'r') as archivo:
             for linea in archivo:
@@ -14,11 +14,14 @@ def leer_tiempos_matriz(nombre_archivo):
 
 def leer_todos_los_tiempos():
     resultados = {}
-    nombres_archivos = os.listdir("TimeResultMatriz")
+    nombres_archivos = os.listdir("src/TimeResultMatriz")
     for nombre_archivo in nombres_archivos:
         matriz = nombre_archivo.split(".")[0]
         tiempos = leer_tiempos_matriz(nombre_archivo)
-        resultados[matriz] = tiempos
+        if matriz in resultados:
+            resultados[matriz].extend(tiempos)
+        else:
+            resultados[matriz] = tiempos
     return resultados
 
 # Ejemplo de uso:

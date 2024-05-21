@@ -16,13 +16,13 @@ class ExportarTiempos:
     @staticmethod
     def exportar_tiempos(lista, item):
         ruta_archivo = os.path.join("src", "TimeResult", f"{ExportarTiempos.algoritmo[item - 1]}.txt")
-        with open(ruta_archivo, "w") as archivo:
+        with open(ruta_archivo, "a") as archivo:  # Cambio de 'w' a 'a'
             for numero in lista:
                 archivo.write(str(numero) + "\n")
 
     @staticmethod
     def exportar_tiempos_matriz(lista, item):
         ruta_archivo = os.path.join("src", "TimeResultMatriz", f"{ExportarTiempos.matrices[item - 1]}.txt")
-        with open(ruta_archivo, "w") as archivo:
+        with open(ruta_archivo, "a") as archivo:  # Cambio de 'w' a 'a'
             for numero in lista:
                 archivo.write(str(numero) + "\n")
