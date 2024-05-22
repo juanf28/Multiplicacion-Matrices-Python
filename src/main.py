@@ -38,13 +38,13 @@ class Main:
 
     @staticmethod
     def main(args):
-        Main.crearMatrices()
-        Main.vaciar_tiempos()
-        Main.calcular_tiempos()
-        Main.mostrar_grafica()
+      ##  Main.crearMatrices()
+    ## Main.vaciar_tiempos()
+     Main.calcular_tiempos()
+     Main.mostrar_grafica()
     @staticmethod
     def calcular_tiempos():
-        for algoritmo in range(1, 16):  # Solo de 4 a 15 según tu Java
+        for algoritmo in range(7, 16):  # Solo de 4 a 15 según tu Java
                     for caso in range(1, 9):  # Solo el caso 8 según tu Java
                         print(f"Ejecutando algoritmo {algoritmo} caso {caso}...")
                         Main.matrices(caso)
@@ -123,7 +123,7 @@ class Main:
             elif option == 5:
                 Main.execute_algorithm(lambda: WinogradScaled.multiply(matrizDouble1, matrizDouble2))
             elif option == 6:
-                Main.execute_algorithm(lambda: StrassenNaiv(matrizDouble1, matrizDouble2))
+                Main.execute_algorithm(lambda: StrassenNaiv.multiply(matrizDouble1, matrizDouble2))
             elif option == 7:
                 Main.execute_algorithm(lambda: StrassenWinograd.multiply(matrizDouble1, matrizDouble2))
             elif option == 8:

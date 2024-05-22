@@ -1,8 +1,8 @@
 import numpy as np
-from tools.Imprimir import Imprimir
 
-class StrassenWinograd(Imprimir):
+class StrassenWinograd:
     
+    @staticmethod
     def multiply(A, B):
         N = len(A)
         P = len(A[0])
@@ -107,15 +107,13 @@ def strassen_winograd_step(A, B, Result, N, m):
     else:
         naiv_standard(A, B, Result, N, N, N)
 
-    def plus(A, B, Result):
-        Result[:,:] = A + B
+def plus(A, B, Result):
+    Result[:,:] = A + B
 
-    def minus(A, B, Result):
-        Result[:,:] = A - B
+def minus(A, B, Result):
+    Result[:,:] = A - B
 
-    def naiv_standard(A, B, Result, N, P, M):
-        for i in range(N):
-            for j in range(M):
-                Result[i, j] = np.dot(A[i, :P], B[:P, j])
-
-    
+def naiv_standard(A, B, Result, N, P, M):
+    for i in range(N):
+        for j in range(M):
+            Result[i, j] = np.dot(A[i, :P], B[:P, j])

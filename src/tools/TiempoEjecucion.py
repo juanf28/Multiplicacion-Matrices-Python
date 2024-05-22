@@ -4,10 +4,10 @@ class TiempoEjecucion:
     matriz512x512 = []
     matriz1024x1024 = []
     matriz2048x2048 = []
+    matriz3072x3072 = []
     matriz4096x4096 = []
     matriz6144x6144 = []
     matriz8192x8192 = []
-    matriz10240x10240 = []
 
     @staticmethod
     def time_algorithm(inicio, fin):
@@ -27,10 +27,10 @@ class TiempoEjecucion:
             elif i == 4:
                 TiempoEjecucion.matriz2048x2048.append(TiempoEjecucion.matrices_tiempo_algoritmos[3])
             elif i == 5:
-                TiempoEjecucion.matriz4096x4096.append(TiempoEjecucion.matrices_tiempo_algoritmos[4])
+                TiempoEjecucion.matriz3072x3072.append(TiempoEjecucion.matrices_tiempo_algoritmos[4])
             elif i == 6:
-                TiempoEjecucion.matriz6144x6144.append(TiempoEjecucion.matrices_tiempo_algoritmos[5])
+                TiempoEjecucion.matriz4096x4096.append(TiempoEjecucion.matrices_tiempo_algoritmos[5])
             elif i == 7:
-                TiempoEjecucion.matriz8192x8192.append(TiempoEjecucion.matrices_tiempo_algoritmos[6])
+                TiempoEjecucion.matriz6144x6144.append(TiempoEjecucion.matrices_tiempo_algoritmos[6])
             elif i == 8:
-                TiempoEjecucion.matriz10240x10240.append(TiempoEjecucion.matrices_tiempo_algoritmos[7])
+                TiempoEjecucion.matriz8192x8192.append(TiempoEjecucion.matrices_tiempo_algoritmos[7])
